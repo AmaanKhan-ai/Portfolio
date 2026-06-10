@@ -15,11 +15,13 @@ const proofButtons = document.querySelectorAll("[data-proof]");
 const proofClose = document.querySelector(".proof-close");
 const projectCases = document.querySelectorAll(".project-case");
 const quickFacts = document.querySelectorAll(".quick-facts > div");
+const codingCards = document.querySelectorAll(".stat-card");
 const certFilters = document.querySelectorAll("[data-cert-filter]");
 const certificationCards = document.querySelectorAll("[data-cert-category]");
 const certPanelTitle = document.getElementById("cert-panel-title");
 const certPanelDescription = document.getElementById("cert-panel-description");
 const certificationsSection = document.getElementById("certifications");
+const certificationDisplay = document.querySelector(".cert-display");
 const portfolioSections = document.querySelectorAll("main, .section[id]");
 const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -39,20 +41,6 @@ window.setTimeout(() => {
 if (previewMode && window.location.hash) {
   window.requestAnimationFrame(() => {
     document.querySelector(window.location.hash)?.scrollIntoView();
-  });
-}
-
-if (visual && terminal && window.matchMedia("(pointer: fine)").matches) {
-  visual.addEventListener("mousemove", (event) => {
-    const bounds = visual.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-
-    terminal.style.transform = `rotateX(${y * -4}deg) rotateY(${x * 5}deg) translateY(-2px)`;
-  });
-
-  visual.addEventListener("mouseleave", () => {
-    terminal.style.transform = "";
   });
 }
 
@@ -115,8 +103,7 @@ const revealSelectors = [
   ".cert-display",
   ".closing-topline",
   ".closing-message",
-  ".closing-details",
-  ".portfolio-footer"
+  ".closing-details"
 ];
 
 const revealItems = [...document.querySelectorAll(revealSelectors.join(","))];
@@ -139,6 +126,7 @@ if (!reducedMotion && !previewMode && "IntersectionObserver" in window) {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
       entry.target.classList.add("is-visible");
+      window.setTimeout(() => entry.target.classList.add("reveal-complete"), 850);
       observer.unobserve(entry.target);
     });
   }, {
@@ -202,10 +190,17 @@ skillTabs.forEach((tab) => {
 
 proofButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    proofDialogImage.src = button.dataset.proof;
-    proofDialogImage.alt = button.dataset.proofTitle;
-    proofDialogTitle.textContent = button.dataset.proofTitle;
-    proofDialog.showModal();
+    button.classList.remove("is-launching");
+    void button.offsetWidth;
+    button.classList.add("is-launching");
+
+    window.setTimeout(() => {
+      proofDialogImage.src = button.dataset.proof;
+      proofDialogImage.alt = button.dataset.proofTitle;
+      proofDialogTitle.textContent = button.dataset.proofTitle;
+      proofDialog.showModal();
+      button.classList.remove("is-launching");
+    }, reducedMotion ? 0 : 140);
   });
 });
 
@@ -217,20 +212,36 @@ proofDialog?.addEventListener("click", (event) => {
   }
 });
 
-if (window.matchMedia("(pointer: fine)").matches) {
+if (window.matchMedia("(pointer: fine)").matches && !reducedMotion) {
   quickFacts.forEach((fact) => {
     fact.addEventListener("mousemove", (event) => {
       const bounds = fact.getBoundingClientRect();
       const x = (event.clientX - bounds.left) / bounds.width - 0.5;
       const y = (event.clientY - bounds.top) / bounds.height - 0.5;
 
-      fact.style.setProperty("--fact-tilt-x", `${y * -5}deg`);
-      fact.style.setProperty("--fact-tilt-y", `${x * 6}deg`);
+      fact.style.setProperty("--fact-tilt-x", `${y * -3.5}deg`);
+      fact.style.setProperty("--fact-tilt-y", `${x * 4.5}deg`);
     });
 
     fact.addEventListener("mouseleave", () => {
       fact.style.setProperty("--fact-tilt-x", "0deg");
       fact.style.setProperty("--fact-tilt-y", "0deg");
+    });
+  });
+
+  codingCards.forEach((card) => {
+    card.addEventListener("mousemove", (event) => {
+      const bounds = card.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+      card.style.setProperty("--stat-tilt-x", `${y * -2.8}deg`);
+      card.style.setProperty("--stat-tilt-y", `${x * 3.4}deg`);
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.setProperty("--stat-tilt-x", "0deg");
+      card.style.setProperty("--stat-tilt-y", "0deg");
     });
   });
 
@@ -257,21 +268,37 @@ if (window.matchMedia("(pointer: fine)").matches) {
 
 const showCertifications = (filter) => {
   const category = filter.dataset.certFilter;
+  let visibleOrder = 0;
 
-  certFilters.forEach((item) => item.classList.toggle("active", item === filter));
+  certFilters.forEach((item) => {
+    const selected = item === filter;
+    item.classList.toggle("active", selected);
+    item.setAttribute("aria-selected", String(selected));
+  });
   certificationCards.forEach((card) => {
     const visible = category === "featured"
       ? card.dataset.certFeatured === "true"
       : card.dataset.certCategory === category;
     card.classList.toggle("is-hidden", !visible);
+    if (visible) {
+      card.style.setProperty("--cert-order", visibleOrder);
+      visibleOrder += 1;
+    }
   });
 
   certPanelTitle.textContent = filter.dataset.certTitle;
   certPanelDescription.textContent = filter.dataset.certDescription;
+
+  if (!reducedMotion && certificationDisplay) {
+    certificationDisplay.classList.remove("is-refreshing");
+    void certificationDisplay.offsetWidth;
+    certificationDisplay.classList.add("is-refreshing");
+  }
 };
 
 certFilters.forEach((filter) => {
   filter.addEventListener("click", () => showCertifications(filter));
+  filter.addEventListener("mouseenter", () => showCertifications(filter));
   filter.addEventListener("focus", () => showCertifications(filter));
 });
 
