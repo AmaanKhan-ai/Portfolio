@@ -31,7 +31,7 @@ document.documentElement.classList.toggle("preview-mode", previewMode);
 
 document.body.classList.add("is-loading");
 
-const introDuration = reducedMotion || previewMode ? 0 : 3900;
+const introDuration = reducedMotion || previewMode ? 0 : 2700;
 
 window.setTimeout(() => {
   document.body.classList.remove("is-loading");
@@ -45,10 +45,10 @@ if (previewMode && window.location.hash) {
 }
 
 const roles = [
-  "Software Development",
-  "Problem Solving",
-  "Applied AI",
-  "Full-Stack Systems"
+  "Reliable Software",
+  "Applied AI Systems",
+  "Scalable Web Products",
+  "Practical Solutions"
 ];
 
 if (rotatingRole && !reducedMotion) {
@@ -85,7 +85,7 @@ if (rotatingRole && !reducedMotion) {
     window.setTimeout(typeRole, 78);
   };
 
-  window.setTimeout(typeRole, 5000);
+  window.setTimeout(typeRole, 3400);
 }
 
 const revealSelectors = [
@@ -164,6 +164,7 @@ const showSkill = (tab) => {
     const selected = item === tab;
     item.classList.toggle("active", selected);
     item.setAttribute("aria-selected", String(selected));
+    item.setAttribute("tabindex", selected ? "0" : "-1");
   });
 
   skillLabel.textContent = tab.dataset.label;
@@ -187,6 +188,35 @@ skillTabs.forEach((tab) => {
   tab.addEventListener("mouseenter", () => showSkill(tab));
   tab.addEventListener("focus", () => showSkill(tab));
 });
+
+const enableTabKeyboardNavigation = (tabs, activate) => {
+  const tabList = Array.from(tabs);
+
+  tabList.forEach((tab, index) => {
+    tab.setAttribute("tabindex", tab.getAttribute("aria-selected") === "true" ? "0" : "-1");
+
+    tab.addEventListener("keydown", (event) => {
+      let nextIndex;
+
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        nextIndex = (index + 1) % tabList.length;
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        nextIndex = (index - 1 + tabList.length) % tabList.length;
+      } else if (event.key === "Home") {
+        nextIndex = 0;
+      } else if (event.key === "End") {
+        nextIndex = tabList.length - 1;
+      } else {
+        return;
+      }
+
+      event.preventDefault();
+      const nextTab = tabList[nextIndex];
+      activate(nextTab);
+      nextTab.focus();
+    });
+  });
+};
 
 proofButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -266,14 +296,40 @@ if (window.matchMedia("(pointer: fine)").matches && !reducedMotion) {
   });
 }
 
+let activeCertificationFilter = "";
+
+const animateCertificationDisplay = () => {
+  if (reducedMotion || !certificationDisplay) return;
+
+  certificationDisplay
+    .querySelectorAll(".cert-display-head, .cert-grid")
+    .forEach((element) => {
+      element.getAnimations().forEach((animation) => animation.cancel());
+      element.animate(
+        [
+          { opacity: 0.2, transform: "translateY(8px)" },
+          { opacity: 1, transform: "translateY(0)" }
+        ],
+        {
+          duration: 280,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          fill: "both"
+        }
+      );
+    });
+};
+
 const showCertifications = (filter) => {
   const category = filter.dataset.certFilter;
+  if (category === activeCertificationFilter) return;
+  activeCertificationFilter = category;
   let visibleOrder = 0;
 
   certFilters.forEach((item) => {
     const selected = item === filter;
     item.classList.toggle("active", selected);
     item.setAttribute("aria-selected", String(selected));
+    item.setAttribute("tabindex", selected ? "0" : "-1");
   });
   certificationCards.forEach((card) => {
     const visible = category === "featured"
@@ -289,11 +345,7 @@ const showCertifications = (filter) => {
   certPanelTitle.textContent = filter.dataset.certTitle;
   certPanelDescription.textContent = filter.dataset.certDescription;
 
-  if (!reducedMotion && certificationDisplay) {
-    certificationDisplay.classList.remove("is-refreshing");
-    void certificationDisplay.offsetWidth;
-    certificationDisplay.classList.add("is-refreshing");
-  }
+  animateCertificationDisplay();
 };
 
 certFilters.forEach((filter) => {
@@ -306,3 +358,6 @@ if (certFilters.length) {
   showCertifications(certFilters[0]);
   certificationsSection?.classList.add("is-ready");
 }
+
+enableTabKeyboardNavigation(skillTabs, showSkill);
+enableTabKeyboardNavigation(certFilters, showCertifications);
