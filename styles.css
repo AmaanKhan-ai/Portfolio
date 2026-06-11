@@ -1588,6 +1588,36 @@ h1 span {
   line-height: 1.65;
 }
 
+.credentials-toggle {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 18px;
+  margin-top: 20px;
+  padding: 0 14px;
+  border: 1px solid rgba(8, 127, 140, 0.28);
+  border-radius: 6px;
+  color: var(--cyan);
+  background: rgba(255, 255, 255, 0.66);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform 180ms var(--ease-out), background 180ms ease, box-shadow 180ms ease;
+}
+
+.credentials-toggle b {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.credentials-toggle:hover,
+.credentials-toggle:focus-visible {
+  background: #ffffff;
+  box-shadow: 0 10px 22px rgba(31, 45, 61, 0.1);
+  transform: translateY(-2px);
+}
+
 .cert-directory {
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
@@ -1603,6 +1633,30 @@ h1 span {
   align-content: center;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+}
+
+.certifications-section:not(.show-all-credentials) .cert-filters {
+  align-content: start;
+  border-bottom: 0;
+}
+
+.certifications-section:not(.show-all-credentials) .cert-filters button:not(:first-child) {
+  display: none;
+}
+
+.certifications-section:not(.show-all-credentials) .cert-filters button:first-child {
+  min-height: 112px;
+  padding: 22px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(8, 127, 140, 0.1), transparent 68%),
+    rgba(255, 255, 255, 0.72);
+  box-shadow: 0 16px 34px rgba(31, 45, 61, 0.08);
+}
+
+.certifications-section:not(.show-all-credentials) .cert-filters button:first-child small {
+  display: block;
 }
 
 .cert-filters button {
@@ -1671,6 +1725,10 @@ h1 span {
 
 .cert-filters button.active small {
   display: none;
+}
+
+.certifications-section:not(.show-all-credentials) .cert-filters button:first-child small {
+  display: block;
 }
 
 .cert-display {

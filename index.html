@@ -378,12 +378,15 @@
       <p>Professional Credentials</p>
       <div>
         <h2>Credentials that strengthen the work.</h2>
-        <p>A focused record of technical learning across artificial intelligence, software development, problem solving, and computer networks, organized by the capabilities each credential supports.</p>
+        <p>A curated selection from established technology and industry organizations, with the complete credential archive available by category.</p>
+        <button class="credentials-toggle" type="button" aria-expanded="false" aria-controls="credential-directory">
+          <span>View all credentials</span><b aria-hidden="true">+</b>
+        </button>
       </div>
     </div>
-    <div class="cert-directory">
+    <div class="cert-directory" id="credential-directory">
         <div class="cert-filters" role="tablist" aria-label="Credential categories">
-          <button class="active" type="button" role="tab" aria-selected="true" data-cert-filter="featured" data-cert-title="Featured credentials" data-cert-description="A concise view of learning from established technology and industry organizations."><span>Featured</span></button>
+          <button class="active" type="button" role="tab" aria-selected="true" data-cert-filter="featured" data-cert-title="Selected credentials" data-cert-description="Eight high-signal credentials from recognized technology, consulting, and problem-solving platforms."><span>Curated Selection</span><small>Eight highlights</small></button>
           <button type="button" role="tab" aria-selected="false" data-cert-filter="ai" data-cert-title="Artificial intelligence" data-cert-description="Foundations and applied learning in AI, intelligent agents, and automation."><span>Artificial Intelligence</span><small>AI &amp; agents</small></button>
           <button type="button" role="tab" aria-selected="false" data-cert-filter="networking" data-cert-title="Computer networks" data-cert-description="A structured path from networking fundamentals to enterprise security and automation."><span>Computer Networks</span><small>Cisco learning path</small></button>
           <button type="button" role="tab" aria-selected="false" data-cert-filter="development" data-cert-title="Software development" data-cert-description="Programming and web development learning centered on practical implementation."><span>Development</span><small>Python &amp; web</small></button>
@@ -393,8 +396,8 @@
         <div class="cert-display">
           <div class="cert-display-head">
             <span>Current view</span>
-            <h3 id="cert-panel-title">Featured credentials</h3>
-            <p id="cert-panel-description">A concise view of learning from established technology and industry organizations.</p>
+            <h3 id="cert-panel-title">Selected credentials</h3>
+            <p id="cert-panel-description">Eight high-signal credentials from recognized technology, consulting, and problem-solving platforms.</p>
           </div>
           <div class="cert-grid">
       <article data-cert-category="development" data-cert-featured="true"><span>Cisco Networking Academy · Python Institute</span><strong>Python Essentials 2</strong><p>Issued Jun 2026</p><button class="cert-proof" type="button" data-proof="./assets/certifications/cisco-python-essentials-2.png" data-proof-title="Cisco — Python Essentials 2">View certificate</button></article>
@@ -410,7 +413,7 @@
       <article data-cert-category="networking"><span>Cisco Networking Academy</span><strong>Introduction to Networks</strong><p>Issued Jan 2026</p><button class="cert-proof" type="button" data-proof="./assets/certifications/cisco-introduction-networks.jpg" data-proof-title="Cisco — Introduction to Networks">View certificate</button></article>
       <article data-cert-category="networking"><span>Cisco Networking Academy</span><strong>Networking Essentials</strong><p>Issued Jan 2026</p><button class="cert-proof" type="button" data-proof="./assets/certifications/cisco-networking-essentials.jpg" data-proof-title="Cisco — Networking Essentials">View certificate</button></article>
       <article data-cert-category="networking"><span>Cisco Networking Academy</span><strong>Network Technician Career Path</strong><p>Issued Jan 2026</p><button class="cert-proof" type="button" data-proof="./assets/certifications/cisco-network-technician.jpg" data-proof-title="Cisco — Network Technician Career Path">View certificate</button></article>
-      <article data-cert-category="professional"><span>Accenture in India</span><strong>Go for Gold-iAspire</strong><p>Issued Jan 2026</p><button class="cert-proof" type="button" data-proof="./assets/certifications/accenture-go-for-gold.jpg" data-proof-title="Accenture — Go for Gold-iAspire">View certificate</button></article>
+      <article data-cert-category="professional" data-cert-featured="true"><span>Accenture in India</span><strong>Go for Gold-iAspire</strong><p>Issued Jan 2026</p><button class="cert-proof" type="button" data-proof="./assets/certifications/accenture-go-for-gold.jpg" data-proof-title="Accenture — Go for Gold-iAspire">View certificate</button></article>
       <article data-cert-category="development" data-cert-featured="true"><span>Infosys Springboard</span><strong>Programming Fundamentals Using Python</strong><p>Issued Dec 2025</p><button class="cert-proof" type="button" data-proof="./assets/certifications/infosys-python-fundamentals.jpg" data-proof-title="Infosys — Programming Fundamentals Using Python">View certificate</button></article>
       <article data-cert-category="ai" data-cert-featured="true"><span>Salesforce</span><strong>Salesforce Certified Agentforce Specialist</strong><p>Issued Dec 2025</p><button class="cert-proof" type="button" data-proof="./assets/certifications/salesforce-agentforce-specialist.jpg" data-proof-title="Salesforce Certified Agentforce Specialist">View certificate</button></article>
       <article data-cert-category="professional"><span>Unstop</span><strong>Certificate of Participation</strong><p>Issued Nov 2025 · Tata Crucible Campus Quiz</p><button class="cert-proof" type="button" data-proof="./assets/certifications/unstop-tata-crucible.jpg" data-proof-title="Unstop — Tata Crucible Campus Quiz">View certificate</button></article>
@@ -422,7 +425,7 @@
       <article data-cert-category="professional"><span>InAmigos Foundation</span><strong>Blogger / Content Writing</strong><p>Issued Jan 2025</p><button class="cert-proof" type="button" data-proof="./assets/certifications/inamigos-blogger.jpg" data-proof-title="InAmigos — Blogger / Content Writing">View certificate</button></article>
       <article data-cert-category="development"><span>HackerRank</span><strong>Python (Basic)</strong><p>Issued Dec 2024</p><a class="cert-proof" href="https://www.hackerrank.com/certificates/3b83fa720881" target="_blank" rel="noreferrer">View certificate</a></article>
       <article data-cert-category="development"><span>Unified Mentor</span><strong>Web Development</strong><p>Issued Feb 2024</p><button class="cert-proof" type="button" data-proof="./assets/certifications/unified-mentor-web-development.jpg" data-proof-title="Unified Mentor — Web Development">View certificate</button></article>
-      <article data-cert-category="problem-solving"><span>Smart Interviews</span><strong>Smart Coder</strong><p>Data Structures and Algorithms</p><a class="cert-proof" href="https://smartinterviews.in/certificate/3ca28fdb" target="_blank" rel="noreferrer">View certificate</a></article>
+      <article data-cert-category="problem-solving" data-cert-featured="true"><span>Smart Interviews</span><strong>Smart Coder</strong><p>Data Structures and Algorithms</p><a class="cert-proof" href="https://smartinterviews.in/certificate/3ca28fdb" target="_blank" rel="noreferrer">View certificate</a></article>
           </div>
         </div>
     </div>

@@ -22,6 +22,7 @@ const certPanelTitle = document.getElementById("cert-panel-title");
 const certPanelDescription = document.getElementById("cert-panel-description");
 const certificationsSection = document.getElementById("certifications");
 const certificationDisplay = document.querySelector(".cert-display");
+const credentialsToggle = document.querySelector(".credentials-toggle");
 const portfolioSections = document.querySelectorAll("main, .section[id]");
 const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -192,26 +193,28 @@ skillTabs.forEach((tab) => {
 const enableTabKeyboardNavigation = (tabs, activate) => {
   const tabList = Array.from(tabs);
 
-  tabList.forEach((tab, index) => {
+  tabList.forEach((tab) => {
     tab.setAttribute("tabindex", tab.getAttribute("aria-selected") === "true" ? "0" : "-1");
 
     tab.addEventListener("keydown", (event) => {
+      const availableTabs = tabList.filter((item) => getComputedStyle(item).display !== "none");
+      const index = availableTabs.indexOf(tab);
       let nextIndex;
 
       if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-        nextIndex = (index + 1) % tabList.length;
+        nextIndex = (index + 1) % availableTabs.length;
       } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-        nextIndex = (index - 1 + tabList.length) % tabList.length;
+        nextIndex = (index - 1 + availableTabs.length) % availableTabs.length;
       } else if (event.key === "Home") {
         nextIndex = 0;
       } else if (event.key === "End") {
-        nextIndex = tabList.length - 1;
+        nextIndex = availableTabs.length - 1;
       } else {
         return;
       }
 
       event.preventDefault();
-      const nextTab = tabList[nextIndex];
+      const nextTab = availableTabs[nextIndex];
       activate(nextTab);
       nextTab.focus();
     });
@@ -358,6 +361,20 @@ if (certFilters.length) {
   showCertifications(certFilters[0]);
   certificationsSection?.classList.add("is-ready");
 }
+
+credentialsToggle?.addEventListener("click", () => {
+  const showingAll = certificationsSection?.classList.toggle("show-all-credentials") ?? false;
+  credentialsToggle.setAttribute("aria-expanded", String(showingAll));
+  credentialsToggle.querySelector("span").textContent = showingAll
+    ? "Show selected credentials"
+    : "View all credentials";
+  credentialsToggle.querySelector("b").textContent = showingAll ? "−" : "+";
+
+  if (!showingAll && certFilters[0]) {
+    activeCertificationFilter = "";
+    showCertifications(certFilters[0]);
+  }
+});
 
 enableTabKeyboardNavigation(skillTabs, showSkill);
 enableTabKeyboardNavigation(certFilters, showCertifications);
